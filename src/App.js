@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+
+import {Login, Register, Toggle, Forgot, Dashboard} from './containers';
+import {Strength } from './components';
 import './App.css';
 
-function App() {
+
+const App = () => {
+  const [theme, setTheme] = useState('dark');
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+  }, [theme]);
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Toggle handleChange={toggleTheme} isChecked={theme === 'dark'} />
+      <Routes>
+        <Route index element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/forgot-pass' element={<Forgot/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
+      </Routes>
+      <Strength/>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
+//  useEffect(() => {
+// document.documentElement.setAttribute('data-theme', theme)}, [theme]);
